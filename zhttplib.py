@@ -105,7 +105,7 @@ class zhttp(http.server.BaseHTTPRequestHandler):
                     self.wfile.write(selection)
             elif isinstance(selection, str):
                     self.wfile.write(selection.encode("utf-8"))
-            else:
+            elif type(selection) == type(setdebug):
                     output = selection(data)
                     if isinstance(output, bytes):
                         self.wfile.write(output)
@@ -114,5 +114,10 @@ class zhttp(http.server.BaseHTTPRequestHandler):
                             self.wfile.write(str(output).encode("utf-8"))
                         except:
                             raise Exception("Illegal type")
+            else:
+                try:
+                    self.wfile.write(str(selection).encode("utf-8"))
+                except:
+                    raise Exception("Illegal type")
         except ConnectionAbortedError:
             self.logger(3, "ConnectionAbortedError")
